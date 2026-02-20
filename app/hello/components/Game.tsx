@@ -1,7 +1,6 @@
-"use client"; // client-side component
+"use client";
 import { useRef, useEffect, useState } from "react";
 
-// Game constants
 const CANVAS_SIZE = 400;
 const SCALE = 20;
 const ROWS = CANVAS_SIZE / SCALE;
@@ -26,13 +25,11 @@ export default function SnakeGame() {
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
 
-  // Generate random food position
   const randomFood = () => ({
     x: Math.floor(Math.random() * ROWS),
     y: Math.floor(Math.random() * ROWS),
   });
 
-  // Game loop
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       switch (e.key) {
@@ -51,15 +48,16 @@ export default function SnakeGame() {
       }
     };
     window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [dir]);
 
+  useEffect(() => {
     const interval = setInterval(() => {
       if (gameOver) return;
 
       setSnake((prev) => {
-        const newSnake = [...prev];
-        const head = { ...newSnake[newSnake.length - 1] };
+        const head = { ...prev[prev.length - 1] };
 
-        // Move head
         switch (dir) {
           case Direction.UP:
             head.y -= 1;
@@ -75,62 +73,85 @@ export default function SnakeGame() {
             break;
         }
 
-        // Wrap around edges
-        head.x = (head.x + ROWS) % ROWS;
-        head.y = (head.y + ROWS) % ROWS;
+        if (head.x < 0 || head.x >= ROWS || head.y < 0 || head.y >= ROWS) {
+          setGameOver(true);
+          return prev;
+        }
 
-        // Check collision with self
         if (
-          newSnake.some(
-            (segment) => segment.x === head.x && segment.y === head.y,
-          )
+          prev.some((segment) => segment.x === head.x && segment.y === head.y)
         ) {
           setGameOver(true);
           return prev;
         }
 
-        newSnake.push(head);
+        const newSnake = [...prev, head];
 
-        // Check food
         if (head.x === food.x && head.y === food.y) {
           setFood(randomFood());
-          setScore((prev) => prev + 1);
+          setScore((s) => s + 1);
         } else {
-          newSnake.shift(); // move forward
+          newSnake.shift();
         }
 
         return newSnake;
       });
     }, 150);
 
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("keydown", handleKey);
-    };
+    return () => clearInterval(interval);
   }, [dir, food, gameOver]);
 
-  // Draw canvas
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Clear canvas
-    ctx.fillStyle = "#000";
+    ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+    ctx.fillStyle = "#111";
     ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
 
-    // Draw food
     ctx.fillStyle = "red";
-    ctx.fillRect(food.x * SCALE, food.y * SCALE, SCALE, SCALE);
+    ctx.shadowColor = "rgba(255,0,0,0.6)";
+    ctx.shadowBlur = 15;
+    ctx.beginPath();
+    ctx.arc(
+      food.x * SCALE + SCALE / 2,
+      food.y * SCALE + SCALE / 2,
+      SCALE / 2,
+      0,
+      Math.PI * 2,
+    );
+    ctx.fill();
+    ctx.shadowBlur = 0;
 
-    // Draw snake
-    ctx.fillStyle = "#0f0";
-    snake.forEach((segment) => {
-      ctx.fillRect(segment.x * SCALE, segment.y * SCALE, SCALE, SCALE);
-    });
+    if (snake.length > 1) {
+      ctx.strokeStyle = "#0f0";
+      ctx.lineWidth = SCALE;
+      ctx.lineJoin = "round";
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      snake.forEach((segment, i) => {
+        const x = segment.x * SCALE + SCALE / 2;
+        const y = segment.y * SCALE + SCALE / 2;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+    } else {
+      const s = snake[0];
+      ctx.fillStyle = "#0f0";
+      ctx.beginPath();
+      ctx.arc(
+        s.x * SCALE + SCALE / 2,
+        s.y * SCALE + SCALE / 2,
+        SCALE / 2,
+        0,
+        Math.PI * 2,
+      );
+      ctx.fill();
+    }
 
-    // Draw score
     ctx.fillStyle = "white";
     ctx.font = "20px Arial";
     ctx.fillText(`Score: ${score}`, 10, 20);
@@ -138,7 +159,7 @@ export default function SnakeGame() {
     if (gameOver) {
       ctx.fillStyle = "white";
       ctx.font = "30px Arial";
-      ctx.fillText("Game Over", CANVAS_SIZE / 2 - 70, CANVAS_SIZE / 2);
+      ctx.fillText("Game Over", CANVAS_SIZE / 2 - 80, CANVAS_SIZE / 2);
     }
   }, [snake, food, score, gameOver]);
 

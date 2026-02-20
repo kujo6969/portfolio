@@ -12,7 +12,7 @@ const Container = () => {
 
   return (
     <div className="mx-auto w-[97%] border border-gray-800 rounded-md text-white text-3xl font-semibold flex flex-col min-h-[94vh] bg-[#011627]">
-      <div className="relative z-10 w-full border-b border-gray-800 bg-neutral-900">
+      <div className="relative w-full border-b border-gray-800 bg-neutral-900">
         <Header active={active} setActive={setActive} />
       </div>
 
