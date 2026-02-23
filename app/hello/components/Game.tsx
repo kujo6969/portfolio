@@ -1,4 +1,5 @@
 "use client";
+import { div } from "framer-motion/client";
 import { useRef, useEffect, useState } from "react";
 
 const CANVAS_SIZE = 400;
@@ -172,20 +173,22 @@ export default function SnakeGame() {
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: 20 }}>
-      <canvas
-        ref={canvasRef}
-        width={CANVAS_SIZE}
-        height={CANVAS_SIZE}
-        style={{ border: "2px solid white", backgroundColor: "#111" }}
-      />
-      <div style={{ marginTop: 10 }}>
-        <button
-          onClick={restartGame}
-          style={{ padding: "10px 20px", fontSize: 16 }}
-        >
-          Restart
-        </button>
+    <div className="w-full h-full border border-red-50">
+      <div style={{ textAlign: "center", marginTop: 20 }}>
+        <canvas
+          ref={canvasRef}
+          width={CANVAS_SIZE}
+          height={CANVAS_SIZE}
+          style={{ border: "2px solid white", backgroundColor: "#111" }}
+        />
+        <div style={{ marginTop: 10 }}>
+          <button
+            onClick={restartGame}
+            style={{ padding: "10px 20px", fontSize: 16 }}
+          >
+            Restart
+          </button>
+        </div>
       </div>
     </div>
   );

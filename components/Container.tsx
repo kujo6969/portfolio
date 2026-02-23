@@ -1,22 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import Footer from "./Footer";
 import Header from "./Header";
-import HelloPage from "@/app/hello/page";
-import ProjectsPage from "@/app/projects/page";
 
-const Container = () => {
-  const [active, setActive] = useState(0);
-
-  const pages = [<HelloPage />, <ProjectsPage />, <HelloPage />];
-
+const Container = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="mx-auto w-[97%] border border-gray-800 rounded-md text-white text-3xl font-semibold flex flex-col min-h-[94vh] bg-[#011627]">
-      <div className="relative w-full border-b border-gray-800 bg-neutral-900">
-        <Header active={active} setActive={setActive} />
-      </div>
+    <div className="flex min-h-screen items-center justify-center bg-background text-foreground transition-colors duration-300">
+      <div
+        className="mx-auto w-[97%]
+      border border-border
+      rounded-lg
+      text-foreground
+      text-3xl font-semibold
+      flex flex-col
+      min-h-[94vh]
+      bg-card
+      shadow-sm
+      transition-colors duration-300"
+      >
+        <div className="relative w-full border-b border-border bg-background">
+          <Header />
+        </div>
 
-      <main className="flex flex-1 w-full">{pages[active]}</main>
+        <main className="min-h-[80vh]">{children}</main>
+        <Footer />
+      </div>
     </div>
   );
 };
