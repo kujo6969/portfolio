@@ -16,7 +16,7 @@ export default function AboutLayout({
   const links = [
     { label: "bio", href: "/about-me/bio" },
     { label: "education", href: "/about-me/education" },
-    { label: "Skills", href: "/about-me/skills" },
+    { label: "tech-stacks", href: "/about-me/tech-stack" },
   ];
 
   return (
@@ -89,7 +89,6 @@ export default function AboutLayout({
         >
           {links.map((link) => {
             const isActive = pathname === link.href;
-            console.log(isActive);
             return (
               <Link
                 key={link.href}
@@ -115,8 +114,8 @@ export default function AboutLayout({
         </div>
       </div>
 
-      <main className="flex-1 p-8 flex items-center justify-center">
-        <div className="w-full max-w-3xl text-center">{children}</div>
+      <main className="w-full p-8">
+        <div className="w-full h-full">{children}</div>
       </main>
     </div>
   );

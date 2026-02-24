@@ -1,9 +1,60 @@
 "use client";
 
 import { motion, Variants } from "framer-motion";
+import { useEffect, useState } from "react";
 
 const BasicInfo = () => {
   const text = "Hello, my name is";
+
+  const roles = [
+    "Full-Stack Developer",
+    "Software Developer",
+    "Mobile Developer",
+    "Backend Developer",
+    "Web Developer",
+  ];
+
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [typedText, setTypedText] = useState("");
+  const [phase, setPhase] = useState<"typing" | "pausing" | "deleting">(
+    "typing",
+  );
+
+  useEffect(() => {
+    const currentRole = roles[roleIndex];
+    let timeout: NodeJS.Timeout;
+
+    if (phase === "typing") {
+      if (typedText.length < currentRole.length) {
+        timeout = setTimeout(() => {
+          setTypedText(currentRole.slice(0, typedText.length + 1));
+        }, 65);
+      } else {
+        timeout = setTimeout(() => {
+          setPhase("pausing");
+        }, 1200);
+      }
+    }
+
+    if (phase === "pausing") {
+      timeout = setTimeout(() => {
+        setPhase("deleting");
+      }, 600);
+    }
+
+    if (phase === "deleting") {
+      if (typedText.length > 0) {
+        timeout = setTimeout(() => {
+          setTypedText(currentRole.slice(0, typedText.length - 1));
+        }, 40);
+      } else {
+        setPhase("typing");
+        setRoleIndex((prev) => (prev + 1) % roles.length);
+      }
+    }
+
+    return () => clearTimeout(timeout);
+  }, [typedText, phase, roleIndex, roles]);
 
   const container: Variants = {
     hidden: {},
@@ -79,7 +130,20 @@ const BasicInfo = () => {
         className="font-header text-3xl md:text-4xl text-primary pb-6 flex items-center gap-3"
       >
         <span className="text-primary">{">"}</span>
-        Full-Stack Developer
+
+        <span className="relative min-h-10 inline-flex items-center">
+          {typedText}
+
+          <motion.span
+            className="ml-1 w-0.5 h-[1.2em] bg-primary"
+            animate={{ opacity: [0, 1, 0] }}
+            transition={{
+              duration: 1,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+        </span>
       </motion.h2>
 
       <motion.div
@@ -91,12 +155,12 @@ const BasicInfo = () => {
       >
         <p className="text-lg text-muted-foreground hover:text-foreground transition-colors duration-300">
           <span className="mr-3 text-border">//</span>
-          Crafting scalable web experiences
+          Welcome to my simple and humble portfolio
         </p>
 
         <p className="text-lg text-muted-foreground hover:text-foreground transition-colors duration-300">
           <span className="mr-3 text-border">//</span>
-          Building modern, performant applications
+          Please explore the journey through this site
         </p>
       </motion.div>
     </div>

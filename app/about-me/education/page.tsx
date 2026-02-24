@@ -1,9 +1,7 @@
-import React from 'react'
+import WorldScene from "./components/WorldScene";
 
-const page = () => {
-  return (
-    <div>page</div>
-  )
-}
+const Page = () => {
+  return <WorldScene />;
+};
 
-export default page
+export default Page;

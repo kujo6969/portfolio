@@ -23,7 +23,9 @@ const Container = ({ children }: { children: React.ReactNode }) => {
         </div>
 
         <main className="min-h-[80vh]">{children}</main>
-        <Footer />
+        <div className="relative w-full border-t border-border bg-background">
+          <Footer />
+        </div>
       </div>
     </div>
   );

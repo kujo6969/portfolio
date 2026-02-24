@@ -260,9 +260,9 @@
   --font-header: var(--font-dyna-puff);
   --font-body: var(--font-inter);
   --font-sub-body: var(--font-dyna-puff);
+
   --blur-primary: oklch(83.845% 0.15633 326.829);
   --blur-secondary: oklch(69.842% 0.19417 16.708);
-
 
   --radius: 1.5rem;
   --background: oklch(0.98 0.15 330);
@@ -304,4 +304,37 @@
       background-color 0.3s ease,
       color 0.3s ease;
   }
+  /* .light {
+    cursor: url("/cursors/light.cur"), auto;
+  }
+
+  .dark {
+    cursor: url("/cursors/dark.cur"), auto;
+  }
+
+  .retro {
+    cursor: url("/cursors/retro.cur"), auto;
+  }
+
+  .retro a,
+  .retro button {
+    cursor: url("/cursors/retro-pointer.cur"), pointer;
+  }
+
+  .cartoon {
+    cursor: url("/cursors/cartoon.cur"), auto;
+  }
+
+  .vapor {
+    cursor: url("/cursors/vapor/arrow.cur"), auto;
+  }
+
+  .cute {
+    cursor: url("/cursors/cute/arrow.cur"), auto;
+  }
+
+  .cute a,
+  .cute button {
+    cursor: url("/cursors/cute-pointer.cur"), pointer;
+  } */
 }

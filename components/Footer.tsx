@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="bg-background text-foreground font-header transition-colors duration-300  z-10 border-t border-border">
+    <footer className="bg-background text-foreground font-header transition-colors duration-300">
       <div className="flex flex-col md:flex-row items-center justify-between p-5 space-y-3 md:space-y-0">
         <p className="text-base text-muted-foreground tracking-widest">
           Find Me
